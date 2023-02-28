@@ -1,16 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
-import { getMovies } from 'services/fakeAPI';
 
-export const Home = () => {
-  const movies = getMovies();
+export const MoviesList = ({ movies }) => {
   const location = useLocation();
-
+  console.log(location.state);
   return (
     <>
-      <h1>Trending today</h1>
       {movies.map(movie => (
         <div key={movie.id}>
-          <Link to={`movies/${movie.id}`} state={{ from: location }}>
+          <Link to={`${movie.id}`} state={{ from: location }}>
             {movie.name}
           </Link>
         </div>
