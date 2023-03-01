@@ -1,14 +1,50 @@
-import { Wrapper, Input, Icon } from './SearchBox.styled';
+import PropTypes from 'prop-types';
 
-export const SearchBox = ({ value, onChange }) => {
+import { useState } from 'react';
+import {
+  SearchForm,
+  SearchFormButton,
+  SearchFormButtonLabel,
+  SearchFormInput,
+} from './SearchBox.styled';
+
+export const SearchBox = ({ onSubmit }) => {
+  const [searchParams, setSearchParams] = useState('');
+
+  const handleChange = e => {
+    setSearchParams(e.currentTarget.value.toLowerCase());
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (searchParams.trim() === '') {
+      alert('Try again');
+      return;
+    }
+
+    onSubmit(searchParams);
+    setSearchParams('');
+  };
+
   return (
-    <Wrapper>
-      <Icon />
-      <Input
+    <SearchForm onSubmit={handleSubmit}>
+      <SearchFormInput
         type="text"
-        value={value}
-        onChange={e => onChange(e.target.value)}
+        autocomplete="off"
+        autoFocus
+        name="searchParams"
+        placeholder="Search movies"
+        value={searchParams}
+        onChange={handleChange}
       />
-    </Wrapper>
+      <SearchFormButton type="submit">
+        <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+      </SearchFormButton>
+    </SearchForm>
   );
+};
+
+SearchBox.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };

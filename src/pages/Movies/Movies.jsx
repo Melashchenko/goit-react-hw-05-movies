@@ -1,27 +1,32 @@
-import { useSearchParams } from 'react-router-dom';
-
 import { MoviesList } from 'components/MovieList/MovieList';
 import { SearchBox } from 'components/SearchBox/SearchBox';
-import { getMovies } from 'services/fakeAPI';
+
+import { useEffect, useState } from 'react';
+import { getSearchMovie } from 'services/API';
 
 export const Movies = () => {
-  const movies = getMovies();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const movieName = searchParams.get('name') ?? '';
+  const [searchMovies, setSearchMovies] = useState('');
+  const [movies, setMovies] = useState([]);
 
-  const visibleMovies = movies.filter(movie =>
-    movie.name.toLowerCase().includes(movieName.toLowerCase())
-  );
+  useEffect(() => {
+    getSearchMovie(searchMovies).then(movies => {
+      console.log(movies);
+      return setMovies(movies.results);
+    });
+  }, [searchMovies]);
 
-  const updateQueryString = name => {
-    const nextParams = name !== '' ? { name } : {};
-    setSearchParams(nextParams);
+  const handleFormSubmit = moviesName => {
+    if (moviesName === searchMovies) {
+      return;
+    }
+
+    setSearchMovies(moviesName);
   };
 
   return (
     <>
-      <SearchBox value={movieName} onChange={updateQueryString} />
-      <MoviesList movies={visibleMovies} />
+      <SearchBox onSubmit={handleFormSubmit} />
+      <MoviesList movies={movies} />
     </>
   );
 };
