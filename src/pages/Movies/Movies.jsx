@@ -20,7 +20,7 @@ export const Movies = () => {
       console.log(movies);
       return setMovies(movies.results);
     });
-  }, [searchMovies]);
+  }, [queryName, searchMovies]);
 
   const handleFormSubmit = e => {
     e.preventDefault();
