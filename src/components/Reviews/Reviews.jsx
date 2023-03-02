@@ -1,19 +1,30 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getMovieReviews } from 'services/API';
+
 export const Reviews = () => {
+  const { movieId } = useParams();
+
+  const [movieReviews, setMovieReviews] = useState([]);
+
+  useEffect(() => {
+    getMovieReviews(movieId).then(reviews => {
+      console.log(reviews);
+      return setMovieReviews(reviews.results);
+    });
+  }, [movieId]);
+
   return (
     <>
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus sunt
-        excepturi nesciunt iusto dignissimos assumenda ab quae cupiditate a, sed
-        reprehenderit? Deleniti optio quasi, amet natus reiciendis atque fuga
-        dolore? Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-        Impedit suscipit quisquam incidunt commodi fugiat aliquam praesentium
-        ipsum quos unde voluptatum? Lorem ipsum dolor, sit amet consectetur
-        adipisicing elit. Doloribus sunt excepturi nesciunt iusto dignissimos
-        assumenda ab quae cupiditate a, sed reprehenderit? Deleniti optio quasi,
-        amet natus reiciendis atque fuga dolore? Lorem, ipsum dolor sit amet
-        consectetur adipisicing elit. Impedit suscipit quisquam incidunt commodi
-        fugiat aliquam praesentium ipsum quos unde voluptatum?
-      </p>
+      {movieReviews.length === 0 && (
+        <h3>We don't have any reviews for this movie</h3>
+      )}
+      {movieReviews.map(review => (
+        <div key={review.id}>
+          <h3>Author: {review.author}</h3>
+          <p> {review.content} </p>
+        </div>
+      ))}
     </>
   );
 };

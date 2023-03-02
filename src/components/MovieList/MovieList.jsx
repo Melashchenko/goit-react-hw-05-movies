@@ -1,17 +1,21 @@
 import { Link, useLocation } from 'react-router-dom';
+import { Container } from './MovieList.styled';
 
 export const MoviesList = ({ movies }) => {
   const location = useLocation();
-  console.log(movies);
+
   return (
-    <>
+    <Container>
       {movies.map(movie => (
         <div key={movie.id}>
           <Link to={`/movies/${movie.id}`} state={{ from: location }}>
-            {movie.title}
+            <img
+              src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+              alt={movie.title}
+            />
           </Link>
         </div>
       ))}
-    </>
+    </Container>
   );
 };

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
 import {
   SearchForm,
   SearchFormButton,
@@ -8,35 +7,16 @@ import {
   SearchFormInput,
 } from './SearchBox.styled';
 
-export const SearchBox = ({ onSubmit }) => {
-  const [searchParams, setSearchParams] = useState('');
-
-  const handleChange = e => {
-    setSearchParams(e.currentTarget.value.toLowerCase());
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    if (searchParams.trim() === '') {
-      alert('Try again');
-      return;
-    }
-
-    onSubmit(searchParams);
-    setSearchParams('');
-  };
-
+export const SearchBox = ({ value, onChange, onSubmit }) => {
   return (
-    <SearchForm onSubmit={handleSubmit}>
+    <SearchForm onSubmit={onSubmit}>
       <SearchFormInput
         type="text"
         autocomplete="off"
         autoFocus
-        name="searchParams"
         placeholder="Search movies"
-        value={searchParams}
-        onChange={handleChange}
+        value={value}
+        onChange={e => onChange(e.target.value)}
       />
       <SearchFormButton type="submit">
         <SearchFormButtonLabel>Search</SearchFormButtonLabel>

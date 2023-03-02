@@ -3,21 +3,21 @@ import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 import { useParams, useLocation } from 'react-router-dom';
-import { getMovieById } from 'services/API';
+import { getMovieDetails } from 'services/API';
 
 export const MovieDetails = () => {
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/';
 
   const { movieId } = useParams();
-  const [movieById, setMovieById] = useState([]);
+  const [movieDetails, setMovieDetails] = useState([]);
 
-  const moviePosterSrc = `https://image.tmdb.org/t/p/w342${movieById.poster_path}`;
+  const moviePosterSrc = `https://image.tmdb.org/t/p/w342${movieDetails.poster_path}`;
 
   useEffect(() => {
-    getMovieById(movieId).then(movie => {
-      console.log(movie);
-      return setMovieById(movie);
+    getMovieDetails(movieId).then(details => {
+      console.log(details);
+      return setMovieDetails(details);
     });
   }, [movieId]);
 
@@ -27,24 +27,30 @@ export const MovieDetails = () => {
 
       <div>
         <div>
-          <img src={moviePosterSrc} alt={movieById.title} />
-          <h2>{movieById.title}</h2>
+          <img src={moviePosterSrc} alt={movieDetails.title} />
+          <h2>{movieDetails.title}</h2>
           <p>
             Release date:{' '}
-            {new Date(movieById.release_date).toLocaleDateString()}
+            {new Date(movieDetails.release_date).toLocaleDateString()}
           </p>
-          <p>User Score: {Math.round(movieById.vote_average * 1000) / 100}%</p>
+          <p>
+            User Score: {Math.round(movieDetails.vote_average * 1000) / 100}%
+          </p>
           <h3>Overview:</h3>
-          <p> {movieById.overview}</p>
+          <p> {movieDetails.overview}</p>
         </div>
         <div>
           <h1>Additional informational</h1>
           <ul>
             <li>
-              <Link to="cast">Cast</Link>
+              <Link to="cast" state={location.state}>
+                Cast
+              </Link>
             </li>
             <li>
-              <Link to="revives">Revives</Link>
+              <Link to="revives" state={location.state}>
+                Revives
+              </Link>
             </li>
           </ul>
           <Outlet />

@@ -8,6 +8,7 @@ export const Home = () => {
 
   useEffect(() => {
     getTrendingMovies().then(movies => {
+      console.log(movies);
       return setMovies(movies.results);
     });
   }, []);
