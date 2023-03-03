@@ -1,4 +1,5 @@
 import { BackLink } from 'components/BackLink/BackLink';
+import { Container } from 'components/MovieList/MovieList.styled';
 import { useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
@@ -12,7 +13,9 @@ export const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
 
-  const moviePosterSrc = `https://image.tmdb.org/t/p/w342${movieDetails.poster_path}`;
+  const poster = movieDetails.poster_path
+    ? `https://image.tmdb.org/t/p/w342${movieDetails.poster_path}`
+    : require('services/no-poster.png');
 
   useEffect(() => {
     getMovieDetails(movieId).then(details => {
@@ -26,19 +29,23 @@ export const MovieDetails = () => {
       <BackLink to={backLinkHref}>Back to</BackLink>
 
       <div>
-        <div>
-          <img src={moviePosterSrc} alt={movieDetails.title} />
-          <h2>{movieDetails.title}</h2>
-          <p>
-            Release date:{' '}
-            {new Date(movieDetails.release_date).toLocaleDateString()}
-          </p>
-          <p>
-            User Score: {Math.round(movieDetails.vote_average * 1000) / 100}%
-          </p>
-          <h3>Overview:</h3>
-          <p> {movieDetails.overview}</p>
-        </div>
+        <Container>
+          <Container>
+            <img src={poster} alt={movieDetails.title} />
+          </Container>
+          <div>
+            <h2>{movieDetails.title}</h2>
+            <p>
+              Release date:{' '}
+              {new Date(movieDetails.release_date).toLocaleDateString()}
+            </p>
+            <p>
+              User Score: {Math.round(movieDetails.vote_average * 1000) / 100}%
+            </p>
+            <h3>Overview:</h3>
+            <p> {movieDetails.overview}</p>
+          </div>
+        </Container>
         <div>
           <h1>Additional informational</h1>
           <ul>

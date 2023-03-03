@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getMovieCredits } from 'services/API';
 import { useParams } from 'react-router-dom';
+import { Container } from 'components/MovieList/MovieList.styled';
 
 export const Cast = () => {
   const { movieId } = useParams();
@@ -15,17 +16,20 @@ export const Cast = () => {
   }, [movieId]);
 
   return (
-    <>
-      {movieCast.map((actor, index) => (
-        <div key={index}>
-          <img
-            src={`https://image.tmdb.org/t/p/w342${actor.profile_path}`}
-            alt={actor.name}
-          />
-          <h3>Name: {actor.name}</h3>
-          <p>Character: {actor.character}</p>
-        </div>
-      ))}
-    </>
+    <Container>
+      {movieCast.map((actor, index) => {
+        const poster = actor.profile_path
+          ? `https://image.tmdb.org/t/p/w342${actor.profile_path}`
+          : require('services/no-poster.png');
+
+        return (
+          <div key={index}>
+            <img src={poster} alt={actor.name} />
+            <h3>Name: {actor.name}</h3>
+            <p>Character: {actor.character}</p>
+          </div>
+        );
+      })}
+    </Container>
   );
 };
