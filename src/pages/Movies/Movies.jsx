@@ -13,17 +13,16 @@ export const Movies = () => {
   const queryName = searchParams.get('query') ?? '';
 
   useEffect(() => {
+    if (searchMovies === '') {
+      return setSearchMovies(queryName);
+    }
+
     getSearchMovie(searchMovies).then(movies => {
       console.log(movies);
       return setMovies(movies.results);
     });
+    // eslint-disable-next-line
   }, [searchMovies]);
-
-  useEffect(() => {
-    if (searchMovies === '') {
-      return setSearchMovies(queryName);
-    }
-  }, []);
 
   const handleFormSubmit = e => {
     e.preventDefault();
