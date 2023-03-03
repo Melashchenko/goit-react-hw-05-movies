@@ -1,12 +1,12 @@
 import { BackLink } from 'components/BackLink/BackLink';
 import { Container } from 'components/MovieList/MovieList.styled';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 import { useParams, useLocation } from 'react-router-dom';
 import { getMovieDetails } from 'services/API';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/';
 
@@ -19,7 +19,6 @@ export const MovieDetails = () => {
 
   useEffect(() => {
     getMovieDetails(movieId).then(details => {
-      console.log(details);
       return setMovieDetails(details);
     });
   }, [movieId]);
@@ -60,9 +59,13 @@ export const MovieDetails = () => {
               </Link>
             </li>
           </ul>
-          <Outlet />
+          <Suspense fallback={<div>Loading ...</div>}>
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </>
   );
 };
+
+export default MovieDetails;

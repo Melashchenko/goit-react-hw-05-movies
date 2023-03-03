@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getSearchMovie } from 'services/API';
 
-export const Movies = () => {
+const Movies = () => {
   const [searchMovies, setSearchMovies] = useState('');
   const [movies, setMovies] = useState([]);
 
@@ -18,7 +18,6 @@ export const Movies = () => {
     }
 
     getSearchMovie(searchMovies).then(movies => {
-      console.log(movies);
       return setMovies(movies.results);
     });
     // eslint-disable-next-line
@@ -45,3 +44,5 @@ export const Movies = () => {
     </>
   );
 };
+
+export default Movies;

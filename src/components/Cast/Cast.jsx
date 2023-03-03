@@ -3,14 +3,13 @@ import { getMovieCredits } from 'services/API';
 import { useParams } from 'react-router-dom';
 import { Container } from 'components/MovieList/MovieList.styled';
 
-export const Cast = () => {
+const Cast = () => {
   const { movieId } = useParams();
 
   const [movieCast, setMovieCast] = useState([]);
 
   useEffect(() => {
     getMovieCredits(movieId).then(credits => {
-      console.log(credits);
       return setMovieCast(credits.cast);
     });
   }, [movieId]);
@@ -33,3 +32,5 @@ export const Cast = () => {
     </Container>
   );
 };
+
+export default Cast;
