@@ -16,16 +16,16 @@ const Cast = () => {
 
   return (
     <Container>
-      {movieCast.map((actor, index) => {
-        const poster = actor.profile_path
-          ? `https://image.tmdb.org/t/p/w342${actor.profile_path}`
+      {movieCast.map(({ profile_path, name, character }, index) => {
+        const poster = profile_path
+          ? `https://image.tmdb.org/t/p/w342${profile_path}`
           : require('services/no-poster.png');
 
         return (
           <div key={index}>
-            <img src={poster} alt={actor.name} />
-            <h3>Name: {actor.name}</h3>
-            <p>Character: {actor.character}</p>
+            <img src={poster} alt={name} />
+            <h3>Name: {name}</h3>
+            <p>Character: {character}</p>
           </div>
         );
       })}

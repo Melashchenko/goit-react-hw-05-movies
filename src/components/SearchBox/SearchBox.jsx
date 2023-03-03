@@ -27,4 +27,6 @@ export const SearchBox = ({ value, onChange, onSubmit }) => {
 
 SearchBox.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
 };

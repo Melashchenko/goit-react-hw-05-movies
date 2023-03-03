@@ -31,6 +31,7 @@ const Movies = () => {
 
   const changeQuery = value => {
     setSearchParams(value !== '' ? { query: value } : {});
+    setSearchMovies(value);
   };
 
   return (

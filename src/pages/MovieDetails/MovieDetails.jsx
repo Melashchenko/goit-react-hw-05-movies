@@ -7,10 +7,10 @@ import { useParams, useLocation } from 'react-router-dom';
 import { getMovieDetails } from 'services/API';
 
 const MovieDetails = () => {
+  const params = useParams();
   const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/';
+  const backLinkHref = location.state?.from ?? '/movies';
 
-  const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
 
   const poster = movieDetails.poster_path
@@ -18,10 +18,12 @@ const MovieDetails = () => {
     : require('services/no-poster.png');
 
   useEffect(() => {
-    getMovieDetails(movieId).then(details => {
+    getMovieDetails(params.movieId).then(details => {
       return setMovieDetails(details);
     });
-  }, [movieId]);
+  }, [params.movieId]);
+
+  const { title, release_date, vote_average, overview } = movieDetails;
 
   return (
     <>
@@ -30,19 +32,14 @@ const MovieDetails = () => {
       <div>
         <Container>
           <Container>
-            <img src={poster} alt={movieDetails.title} />
+            <img src={poster} alt={title} />
           </Container>
           <div>
-            <h2>{movieDetails.title}</h2>
-            <p>
-              Release date:{' '}
-              {new Date(movieDetails.release_date).toLocaleDateString()}
-            </p>
-            <p>
-              User Score: {Math.round(movieDetails.vote_average * 1000) / 100}%
-            </p>
+            <h2>{title}</h2>
+            <p>Release date: {new Date(release_date).toLocaleDateString()}</p>
+            <p>User Score: {Math.round(vote_average * 1000) / 100}%</p>
             <h3>Overview:</h3>
-            <p> {movieDetails.overview}</p>
+            <p> {overview}</p>
           </div>
         </Container>
         <div>
